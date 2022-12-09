@@ -1,5 +1,6 @@
 ---
 # Reference: https://clouddocs.f5.com/products/orchestration/ansible/devel/f5_bigip/modules_2_0/bigip_sslo_config_ssl_module.html#bigip-sslo-config-ssl-module-2
+#DONE
 
 - name: Create SSLO SSL Outbound Configuration
   hosts: all
@@ -10,7 +11,7 @@
   connection: httpapi
 
   vars:
-#     ansible_host: "172.16.1.83"
+    # ansible_host: "172.16.1.83"
     ansible_httpapi_port: 443
     ansible_user: "admin"
     ansible_httpapi_password: "admin"
@@ -19,13 +20,13 @@
     ansible_httpapi_validate_certs: no
 
   tasks:
-#     ## import cert/key
-#     - name: Import CA cert/key
-#       bigip_ssl_key_cert:
-#         key_content: "{{ lookup('file', 'certs/subrsa.f5labs.com.pemk') }}"
-#         key_name: subrsa.f5labs.com
-#         cert_content: "{{ lookup('file', 'certs/subrsa.f5labs.com.crt') }}"
-#         cert_name: subrsa.f5labs.com
+    # ## import cert/key
+    # - name: Import CA cert/key
+    #   bigip_ssl_key_cert:
+    #     key_content: "{{ lookup('file', 'certs/subrsa.f5labs.com.pemk') }}"
+    #     key_name: subrsa.f5labs.com
+    #     cert_content: "{{ lookup('file', 'certs/subrsa.f5labs.com.crt') }}"
+    #     cert_name: subrsa.f5labs.com
 
     ## SSL Configuration (simple)
     - name: Create an SSLO outbound SSL config
@@ -34,31 +35,31 @@
         state: "absent"
         client_settings:
           proxy_type: "forward"
-          ca_cert: "/Common/default.crt"
-          ca_key: "/Common/default.key"
+          ca_cert: "/Common/subrsa.f5labs.com.crt"
+          ca_key: "/Common/subrsa.f5labs.com.key"
         server_settings:
           block_expired: false
           block_untrusted: false
 
-#      ## SSL Configuration (complex)
-#      - name: Create an SSLO outbound SSL config
-#        bigip_sslo_config_ssl:
-#          name: "sslconfig"
-#          state: "absent"
-#          client_settings:
-#            proxy_type: "forward"
-#            cipher_type: "group"
-#            cipher_group: "/Common/f5-default"
-#            ca_cert: "/Common/subrsa.f5labs.com.crt"
-#            ca_key: "/Common/subrsa.f5labs.com.key"
-#            alpn: yes
-#          server_settings:
-#            cipher_type: "group"
-#            cipher_group: "/Common/f5-default"
-#            block_expired: false
-#            block_untrusted: false
-#            ca_bundle: "/Common/ca-bundle.crt"
-#          bypass_handshake_failure: yes
-#          bypass_client_cert_failure: yes
-#          timeout: 400
+    # # SSL Configuration (complex)
+    # - name: Create an SSLO outbound SSL config
+    #   bigip_sslo_config_ssl:
+    #     name: "sslconfig"
+    #     state: "present"
+    #     client_settings:
+    #       proxy_type: "forward"
+    #       cipher_type: "group"
+    #       cipher_group: "/Common/f5-default"
+    #       ca_cert: "/Common/subrsa.f5labs.com.crt"
+    #       ca_key: "/Common/subrsa.f5labs.com.key"
+    #       alpn: yes
+    #     server_settings:
+    #       cipher_type: "group"
+    #       cipher_group: "/Common/f5-default"
+    #       block_expired: false
+    #       block_untrusted: false
+    #       ca_bundle: "/Common/ca-bundle.crt"
+    #     bypass_handshake_failure: yes
+    #     bypass_client_cert_failure: yes
+    #     timeout: 400
 
