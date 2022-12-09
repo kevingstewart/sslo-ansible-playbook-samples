@@ -1,0 +1,39 @@
+---
+# Reference: https://clouddocs.f5.com/products/orchestration/ansible/devel/f5_bigip/modules_2_0/bigip_sslo_service_tap_module.html#bigip-sslo-service-tap-module-2
+
+- name: Create SSLO TAP Service Configuration
+  hosts: all
+  gather_facts: False
+
+  collections:
+    - f5networks.f5_bigip
+  connection: httpapi
+
+  vars:
+    # ansible_host: "172.16.1.83"
+    ansible_httpapi_port: 443
+    ansible_user: "admin"
+    ansible_httpapi_password: "admin"
+    ansible_network_os: f5networks.f5_bigip.bigip
+    ansible_httpapi_use_ssl: yes
+    ansible_httpapi_validate_certs: no
+
+  tasks:
+    - name: SSLO TAP service with interface
+      bigip_sslo_service_tap:
+        name: "tap1"
+        state: "present"
+        devices:
+          interface: "1.7"
+        mac_address: "12:12:12:12:12:12"
+
+    # - name: SSLO TAP service with interface
+    #   bigip_sslo_service_tap:
+    #     name: "tap1"
+    #     state: "present"
+    #     devices:
+    #       interface: "1.7"
+    #     mac_address: "12:12:12:12:12:12"
+    #     port_remap: 8081
+    #     vendor_info: "Cisco Firepower Threat Defense TAP"
+    #     timeout: 300
