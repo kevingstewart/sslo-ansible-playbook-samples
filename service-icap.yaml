@@ -1,0 +1,58 @@
+---
+# Reference: https://clouddocs.f5.com/products/orchestration/ansible/devel/f5_bigip/modules_2_0/bigip_sslo_service_icap_module.html#bigip-sslo-service-icap-module-2
+
+- name: Create SSLO ICAP Service Configuration
+  hosts: all
+  gather_facts: False
+
+  collections:
+    - f5networks.f5_bigip
+  connection: httpapi
+
+  vars:
+    # ansible_host: "172.16.1.83"
+    ansible_httpapi_port: 443
+    ansible_user: "admin"
+    ansible_httpapi_password: "admin"
+    ansible_network_os: f5networks.f5_bigip.bigip
+    ansible_httpapi_use_ssl: yes
+    ansible_httpapi_validate_certs: no
+
+  tasks:
+    - name: Create ICAP service
+      bigip_sslo_service_icap:
+        name: "icap1"
+        state: "present"
+        devices:
+        - ip: "197.17.72.12"
+          port: 1344
+        - ip: "197.17.72.13"
+          port: 1344
+        request_uri: "/avscan"
+        response_uri: "/avscan"
+        preview_length: 51200
+
+    # - name: Create ICAP service
+    #   bigip_sslo_service_icap:
+    #     name: "icap1"
+    #     state: "present"
+    #     ip_family: "ipv4"
+    #     devices:
+    #     - ip: "197.17.72.12"
+    #       port: 1344
+    #     - ip: "197.17.72.13"
+    #       port: 1344
+    #     request_uri: "/avscan"
+    #     response_uri: "/avscan"
+    #     monitor: "/Common/gateway_icmp"
+    #     headers:
+    #       enable: yes
+    #       h_from: "foo_from"
+    #       host: "foo_host"
+    #       user_agent: "foo_ua"
+    #       referrer: "foo_referrer"
+    #     enable_one_connect: no
+    #     preview_length: 2048
+    #     service_down_action: "drop"
+    #     allow_http10: yes
+    #     timeout: 300
