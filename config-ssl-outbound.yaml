@@ -32,14 +32,14 @@
     - name: Create an SSLO outbound SSL config
       bigip_sslo_config_ssl:
         name: "sslconfig"
-        state: "absent"
+        state: "present"
         client_settings:
           proxy_type: "forward"
           ca_cert: "/Common/subrsa.f5labs.com.crt"
           ca_key: "/Common/subrsa.f5labs.com.key"
         server_settings:
-          block_expired: false
-          block_untrusted: false
+          block_expired: ignore
+          block_untrusted: ignore
 
     # # SSL Configuration (complex)
     # - name: Create an SSLO outbound SSL config
