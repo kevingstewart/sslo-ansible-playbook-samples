@@ -1,3 +1,5 @@
+# Reference https://clouddocs.f5.com/products/orchestration/ansible/devel/sslo/sslo-collection.html
+
 - name: Create SSLO service(s)
   hosts: all
   gather_facts: False
@@ -40,6 +42,7 @@
         name: "http"
         proxy_type: "explicit"
         devices_to:
+          ### vlans must exist before running playbook
           vlan: "/Common/to_vlan"
           self_ip: "198.19.64.7"
           netmask: "255.255.255.128"
@@ -50,6 +53,7 @@
         devices:
           - ip: "198.19.64.30%0"
             port: 3128
+        ### snatpool must exist before running playbook    
         snat: snatpool
         snat_pool: "/Common/my-snatpool"
         auth_offload: true
