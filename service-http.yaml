@@ -1,6 +1,6 @@
 # Reference https://clouddocs.f5.com/products/orchestration/ansible/devel/sslo/sslo-collection.html
 
-- name: Create SSLO service(s)
+- name: Create SSLO HTTP service(s)
   hosts: all
   gather_facts: False
   connection: httpapi
