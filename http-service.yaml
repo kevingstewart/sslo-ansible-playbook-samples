@@ -1,0 +1,71 @@
+- name: Create SSLO service(s)
+  hosts: all
+  gather_facts: False
+  connection: httpapi
+
+  collections:
+    - f5networks.f5_bigip
+  vars:
+    ansible_host: "x.x.x.x"
+    ansible_httpapi_port: 443
+    ansible_user: "admin"
+    ansible_httpapi_password: "yourpassword"
+    ansible_network_os: f5networks.f5_bigip.bigip
+    ansible_httpapi_use_ssl: yes
+    ansible_httpapi_validate_certs: no
+  
+  ## HTTP Service Configuration (simple)  
+  #tasks:
+  #  - name: SSLO HTTP service
+  #    bigip_sslo_service_http:
+  #      name: "http"
+  #      proxy_type: "explicit"
+  #      devices_to:
+  #        vlan: "/Common/to_vlan"
+  #        self_ip: "198.19.64.7"
+  #        netmask: "255.255.255.128"
+  #      devices_from:
+  #        vlan: "/Common/from_vlan"      
+  #        self_ip: "198.19.64.245"
+  #        netmask: "255.255.255.128"
+  #      devices:
+  #        - ip: "198.19.64.30%0"
+  #          port: 3128
+
+   ## HTTP Service Configuration (complex)
+       
+  tasks:
+    - name: SSLO HTTP service
+      bigip_sslo_service_http:
+        name: "http"
+        proxy_type: "explicit"
+        devices_to:
+          vlan: "/Common/to_vlan"
+          self_ip: "198.19.64.7"
+          netmask: "255.255.255.128"
+        devices_from:
+          vlan: "/Common/from_vlan"      
+          self_ip: "198.19.64.245"
+          netmask: "255.255.255.128"
+        devices:
+          - ip: "198.19.64.30%0"
+            port: 3128
+        snat: snatpool
+        snat_pool: "/Common/my-snatpool"
+        auth_offload: true
+        ip_family: "ipv4"
+        service_down_action: "reset"
+        port_remap: 8080
+
+    #- name: Modify a HTTP service
+    #  bigip_sslo_service_http:
+    #    name: "http"
+    #    snat: "snatlist"
+    #    snat_list:
+    #      - "198.19.64.10"
+    #      - "198.19.64.11"
+
+    #- name: Delete SSLO HTTP service
+    #  bigip_sslo_service_http:
+    #    name: "http"
+    #    state: "absent"
